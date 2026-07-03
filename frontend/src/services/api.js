@@ -1,7 +1,20 @@
 import axios from "axios";
 
+const normalizeApiBaseUrl = (value) => {
+  const fallback = "http://localhost:5000/api";
+  const base = String(value || fallback)
+    .trim()
+    .replace(/^["']|["']$/g, "")
+    .replace(/\/+$/, "");
+
+  if (!base) return fallback;
+  return base.endsWith("/api") ? base : `${base}/api`;
+};
+
+const API_BASE_URL = normalizeApiBaseUrl(import.meta.env.VITE_API_URL);
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  baseURL: API_BASE_URL,
   timeout: 10000
 });
 
@@ -114,8 +127,7 @@ const parseSseChunk = (buffer, handlers) => {
 };
 
 export const streamAIChat = async ({ payload, signal, handlers = {} }) => {
-  const baseURL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-  const response = await fetch(`${baseURL}/ai/chat`, {
+  const response = await fetch(`${API_BASE_URL}/ai/chat`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

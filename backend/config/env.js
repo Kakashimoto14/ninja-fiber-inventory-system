@@ -1,22 +1,40 @@
 const requiredEnv = (key) => {
-  const value = process.env[key];
+  const value = cleanEnvValue(process.env[key]);
 
-  if (!value || !value.trim()) {
+  if (!value) {
     throw new Error(`Missing required environment variable: ${key}`);
   }
 
-  return value.trim();
+  return value;
 };
 
 const optionalEnv = (key, fallback = "") => {
-  const value = process.env[key];
-  return value && value.trim() ? value.trim() : fallback;
+  const value = cleanEnvValue(process.env[key]);
+  return value || fallback;
+};
+
+const cleanEnvValue = (value) =>
+  String(value || "")
+    .trim()
+    .replace(/^["']|["']$/g, "")
+    .trim();
+
+const normalizeOrigin = (value) => {
+  const cleaned = cleanEnvValue(value).replace(/\/+$/, "");
+
+  if (!cleaned) return "";
+
+  try {
+    return new URL(cleaned).origin;
+  } catch {
+    return cleaned;
+  }
 };
 
 const parseCsv = (value) =>
   String(value || "")
     .split(",")
-    .map((item) => item.trim())
+    .map(normalizeOrigin)
     .filter(Boolean);
 
 export const env = {
