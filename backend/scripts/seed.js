@@ -1,15 +1,11 @@
-import dotenv from "dotenv";
+import "dotenv/config";
 import fs from "node:fs/promises";
 import mongoose from "mongoose";
 import Product from "../models/Product.js";
 import Task from "../models/Task.js";
 import Activity from "../models/Activity.js";
 import User from "../models/User.js";
-
-dotenv.config();
-
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb+srv://admin:Ninja_2026@ninja.7hueaeu.mongodb.net/ninjafiber?retryWrites=true&w=majority&appName=Ninja";
+import { env } from "../config/env.js";
 
 const products = [
   {
@@ -129,7 +125,7 @@ const loadImportedExcelSeed = async () => {
 
 const seed = async () => {
   try {
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(env.mongodbUri);
     await Promise.all([Product.deleteMany(), Task.deleteMany(), Activity.deleteMany(), User.deleteMany()]);
 
     const seedData = await loadImportedExcelSeed();

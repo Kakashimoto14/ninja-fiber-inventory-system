@@ -15,7 +15,7 @@ export const aiConfig = {
   maxOutputTokens: toNumber(process.env.AI_MAX_OUTPUT_TOKENS, 2048),
   providers: {
     gemini: {
-      apiKey: process.env.GEMINI_API_KEY || "AIzaSyCdMfCx4-Zwws73j8CDQ5Jpg8Uyck_lu-M",
+      apiKey: process.env.GEMINI_API_KEY || "",
       model: process.env.GEMINI_MODEL || "gemini-2.5-flash",
       baseUrl: process.env.GEMINI_BASE_URL || "https://generativelanguage.googleapis.com/v1beta"
     },
