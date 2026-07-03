@@ -20,7 +20,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb+srv://admin:Ninja_2026@ninja.7hueaeu.mongodb.net/ninjafiber?retryWrites=true&w=majority&appName=Ninja";
+  process.env.MONGODB_URI || "";
 
 app.use(helmet());
 app.use(
